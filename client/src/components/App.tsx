@@ -1,97 +1,122 @@
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
-import CountUp from "react-countup";
+import { faClock, faMicrophone } from "@fortawesome/free-solid-svg-icons";
+import styled, { keyframes } from "styled-components";
 
-import {
-  hapticFeedback,
-  init,
-  initData,
-  invoice,
-  mainButton,
-  themeParams,
-  viewport,
-} from "@telegram-apps/sdk";
-import request from "../api/requests";
+// Анимация "пульса"
+const pulse = keyframes`
+  0% {
+    box-shadow: 0 0 0 0 rgba(25, 195, 125, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(25, 195, 125, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(25, 195, 125, 0);
+  }
+`;
 
-init();
+// Кнопка (слегка бирюзовая, как у ChatGPT)
+const RecordButton = styled.button`
+  width: 60px;
+  height: 60px;
+  background-color: #19c37d;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: ${pulse} 2s infinite;
 
-viewport.mount();
-themeParams.mount();
-mainButton.mount();
-
-initData.restore();
-viewport.expand();
-themeParams.bindCssVars();
-
-mainButton.setParams({
-  hasShineEffect: true,
-  isEnabled: true,
-  isVisible: false,
-  isLoaderVisible: false,
-  text: "Schedy",
-  textColor: "#ffffff",
-});
-
-function App() {
-  const [stars, setStars] = useState<number>(0);
-
-  useEffect(() => {
-    const handleClick = async () => {
-      if (hapticFeedback.isSupported()) {
-        hapticFeedback.impactOccurred("soft");
-      }
-
-      const response = await request("donate", "post", { amount: stars });
-      invoice.open(response.invoice_link.replace("https://t.me/$", ""));
-    };
-
-    mainButton.onClick(handleClick);
-    return () => {
-      mainButton.offClick(handleClick);
-    };
-  }, [stars]);
-
-  function calcStars(e: any) {
-    const userValue = e.target.value.trim();
-    const starCost = userValue / (0.625 / 50);
-    const prevParams = mainButton.state();
-
-    if (userValue && !isNaN(userValue) && userValue > 0) {
-      mainButton.setParams({ ...prevParams, isVisible: true });
-      setStars(starCost);
-    } else {
-      mainButton.setParams({ ...prevParams, isVisible: false });
-      setStars(0);
-    }
+  &:hover {
+    filter: brightness(110%);
   }
 
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+
+// Иконка расписания (слева сверху)
+const ScheduleIcon = styled(FontAwesomeIcon)`
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 24px;
+  color: #888;
+`;
+
+// Общий контейнер
+const AppContainer = styled.div`
+  background: #fff; /* белый фон */
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center; 
+  justify-content: center;
+`;
+
+// Нижняя панель (диалоговое окно)
+const BottomDialog = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 20%;              /* занимает примерно 20% по высоте */
+  max-height: 180px;        /* ограничим максимальную высоту, чтобы не было слишком громоздко */
+  background-color: #fefefe;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Немного отступов по бокам */
+  padding: 1rem;
+  box-sizing: border-box;
+
+  /* При желании можно сделать панель чуть прозрачной:
+     background-color: rgba(255,255,255,0.95); 
+  */
+`;
+
+// Текст внутри панели
+const DialogText = styled.div`
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+`;
+
+function App() {
+  const [isRecording, setIsRecording] = useState(false);
+
+  const handleRecordClick = () => {
+    setIsRecording(!isRecording);
+  };
+
   return (
-    <div className="flex justify-center items-center h-screen flex-col">
-      <h1 className="text-4xl mb-5 text-white font-semibold">
-        <CountUp end={stars} />{" "}
-        <FontAwesomeIcon icon={faStar} className="text-yellow-400" />
-      </h1>
+    <AppContainer>
+      {/* Иконка расписания */}
+      <ScheduleIcon icon={faClock} />
 
-      <input
-        type="number"
-        className="giest-mono p-3 text-2xl text-center w-[90%]"
-        placeholder="$$$"
-        inputMode="numeric"
-        pattern="[0-9]*"
-        onChange={calcStars}
-        style={{
-          background: "none",
-          border: "2px solid var(--tg-theme-accent-text-color)",
-          borderRadius: "10px",
-          color: "white",
-          outline: "none",
-        }}
-      />
+      {/* Кнопка «Запись» */}
+      <RecordButton onClick={handleRecordClick}>
+        <FontAwesomeIcon icon={faMicrophone} />
+      </RecordButton>
 
-      <p className="text-center text-gray-600 mt-2 w-[90%]">
-      </p>
-    </div>
+      {/* Нижняя панель (диалоговое окно) */}
+      <BottomDialog>
+        <DialogText>
+          {isRecording ? "Сейчас идёт запись..." : "Запись остановлена"}
+        </DialogText>
+      </BottomDialog>
+    </AppContainer>
   );
 }
 
