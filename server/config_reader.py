@@ -11,13 +11,14 @@ from fastapi import FastAPI
 class Config(BaseSettings):
     BOT_TOKEN: SecretStr
     
-    WEBAPP_URL: str = "https://0a83b2fbc1af651711987d99975a0745.serveo.net"
+    WEBAPP_URL: str = "https://c5b33d01-9142-46a1-b475-bcd31672639d.tunnel4.com"
     
-    WEBHOOK_URL: str = "https://fa936cea6b7ceb81fec9a265d9a43dd2.serveo.net"
+    WEBHOOK_URL: str = "https://c5b33d01-9142-46a1-b475-bcd31672639d.tunnel4.com"
     WEBHOOK_PATH: str = "/webhook"
     
     APP_HOST: str = "localhost"
-    APP_PORT: int = 8000
+    APP_PORT: int = 7700
+    
     
     model_config = SettingsConfigDict(
         env_file=join(dirname(__file__), ".env"),
