@@ -20,8 +20,3 @@ async def start(message: Message) -> None:
 @router.pre_checkout_query()
 async def precheck(event: PreCheckoutQuery) -> None:
     await event.answer(True)
-
-
-@router.message(F.successful_payment)
-async def successful_payment(message: Message) -> None:
-    await message.answer("Спасибо за покупку!!!")

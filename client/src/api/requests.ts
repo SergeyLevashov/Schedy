@@ -1,6 +1,6 @@
 import { initData } from "@telegram-apps/sdk";
 
-const DEFAULT_URL = "https://c5b33d01-9142-46a1-b475-bcd31672639d.tunnel4.com/path";
+const DEFAULT_URL = "";
 
 async function request(endpoint: string, method: string = "get", data?: any) {
   const options: RequestInit = {

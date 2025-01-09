@@ -29,7 +29,7 @@ mainButton.setParams({
   isEnabled: true,
   isVisible: false,
   isLoaderVisible: false,
-  text: "SPEND",
+  text: "Schedy",
   textColor: "#ffffff",
 });
 
@@ -90,8 +90,6 @@ function App() {
       />
 
       <p className="text-center text-gray-600 mt-2 w-[90%]">
-        * Сумма указывается в долларах США (USD), после чего автоматический
-        конвертируется в Telegram Stars
       </p>
     </div>
   );

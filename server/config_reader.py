@@ -11,13 +11,13 @@ from fastapi import FastAPI
 class Config(BaseSettings):
     BOT_TOKEN: SecretStr
     
-    WEBAPP_URL: str = "https://c5b33d01-9142-46a1-b475-bcd31672639d.tunnel4.com"
+    WEBAPP_URL: str = ""
     
-    WEBHOOK_URL: str = "https://c5b33d01-9142-46a1-b475-bcd31672639d.tunnel4.com"
+    WEBHOOK_URL: str = ""
     WEBHOOK_PATH: str = "/webhook"
     
     APP_HOST: str = "localhost"
-    APP_PORT: int = 7700
+    APP_PORT: int = 8000
     
     
     model_config = SettingsConfigDict(

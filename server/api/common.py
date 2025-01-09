@@ -17,17 +17,17 @@ async def webhook(request: Request) -> None:
     await dp.feed_update(bot, update)
 
 
-@router.post("/api/donate", response_class=JSONResponse)
-async def donate(request: Request, auth_data: WebAppInitData = Depends(auth)) -> JSONResponse:
-    data = await request.json()
-    invoice_link = await bot(
-        CreateInvoiceLink(
-            title="Donate",
-            description="Make my life better!",
-            payload="donate",
-            currency="XTR",
-            prices=[LabeledPrice(label="XTR", amount=data["amount"])]
-        )
-    )
+# @router.post("/api/donate", response_class=JSONResponse)
+# async def donate(request: Request, auth_data: WebAppInitData = Depends(auth)) -> JSONResponse:
+#     data = await request.json()
+#     invoice_link = await bot(
+#         CreateInvoiceLink(
+#             title="Donate",
+#             description="Make my life better!",
+#             payload="donate",
+#             currency="XTR",
+#             prices=[LabeledPrice(label="XTR", amount=data["amount"])]
+#         )
+#     )
     
-    return JSONResponse({"invoice_link": invoice_link})
+#     return JSONResponse({"invoice_link": invoice_link})
