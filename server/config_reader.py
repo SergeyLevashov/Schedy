@@ -17,7 +17,7 @@ class Config(BaseSettings):
     WEBHOOK_PATH: str = "/webhook"
     
     APP_HOST: str = "localhost"
-    APP_PORT: int = 7700
+    APP_PORT: int = 8000
     
     
     model_config = SettingsConfigDict(

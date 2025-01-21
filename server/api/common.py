@@ -22,10 +22,10 @@ async def webhook(request: Request) -> None:
 #     data = await request.json()
 #     invoice_link = await bot(
 #         CreateInvoiceLink(
-#             title="Donate",
-#             description="Make my life better!",
-#             payload="donate",
-#             currency="XTR",
+#             title="",
+#             description="!",
+#             payload="",
+#             currency="",
 #             prices=[LabeledPrice(label="XTR", amount=data["amount"])]
 #         )
 #     )

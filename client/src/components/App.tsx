@@ -1,4 +1,4 @@
-import { useState } from "react";
+// App.jsx
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import styled, { keyframes } from "styled-components";
@@ -16,11 +16,11 @@ const pulse = keyframes`
   }
 `;
 
-// Кнопка (слегка бирюзовая, как у ChatGPT)
+// Кнопка записи 
 const RecordButton = styled.button`
   width: 60px;
   height: 60px;
-  background-color: #19c37d;
+  background-color: #19c37d; /* Слегка бирюзовый цвет */
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -31,16 +31,18 @@ const RecordButton = styled.button`
   justify-content: center;
   animation: ${pulse} 2s infinite;
 
+  /* Эффект при наведении */
   &:hover {
     filter: brightness(110%);
   }
 
+  /* Эффект при нажатии */
   &:active {
     transform: scale(0.95);
   }
 `;
 
-// Иконка расписания (слева сверху)
+// Иконка расписания (небольшая, слева сверху)
 const ScheduleIcon = styled(FontAwesomeIcon)`
   position: absolute;
   top: 20px;
@@ -49,73 +51,28 @@ const ScheduleIcon = styled(FontAwesomeIcon)`
   color: #888;
 `;
 
-// Общий контейнер
+// Контейнер всего приложения
 const AppContainer = styled.div`
-  background: #fff; /* белый фон */
+  background: #fff;  /* белый фон */
   width: 100vw;
   height: 100vh;
-  position: relative;
+  position: relative; /* чтобы ScheduleIcon мог позиционироваться абсолютно */
   display: flex;
   align-items: center; 
   justify-content: center;
 `;
 
-// Нижняя панель (диалоговое окно)
-const BottomDialog = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 20%;              /* занимает примерно 20% по высоте */
-  max-height: 180px;        /* ограничим максимальную высоту, чтобы не было слишком громоздко */
-  background-color: #fefefe;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /* Немного отступов по бокам */
-  padding: 1rem;
-  box-sizing: border-box;
-
-  /* При желании можно сделать панель чуть прозрачной:
-     background-color: rgba(255,255,255,0.95); 
-  */
-`;
-
-// Текст внутри панели
-const DialogText = styled.div`
-  color: #333;
-  font-size: 16px;
-  font-weight: 500;
-  text-align: center;
-`;
-
 function App() {
-  const [isRecording, setIsRecording] = useState(false);
-
   const handleRecordClick = () => {
-    setIsRecording(!isRecording);
+    console.log("Запись начата");
   };
 
   return (
     <AppContainer>
-      {/* Иконка расписания */}
       <ScheduleIcon icon={faClock} />
-
-      {/* Кнопка «Запись» */}
       <RecordButton onClick={handleRecordClick}>
         <FontAwesomeIcon icon={faMicrophone} />
       </RecordButton>
-
-      {/* Нижняя панель (диалоговое окно) */}
-      <BottomDialog>
-        <DialogText>
-          {isRecording ? "Сейчас идёт запись..." : "Запись остановлена"}
-        </DialogText>
-      </BottomDialog>
     </AppContainer>
   );
 }
